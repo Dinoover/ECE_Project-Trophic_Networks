@@ -532,7 +532,7 @@ void Graph::kconexe(Graph g)
         afficher_ans(ans);
 }
 
-void Graph::sommet_update()
+oid Graph::sommet_update()
 {
     std::vector<double> nourriture;
     std::vector<double> predation;
@@ -552,7 +552,7 @@ void Graph::sommet_update()
         {
             if(y.second.m_from==x.first)
             {
-                predation.push_back(y.second.m_weight * m_vertices[y.second.m_to].m_value);
+                predation.push_back((y.second.m_weight/100) * m_vertices[y.second.m_to].m_value);
             }
             if(y.second.m_to==x.first)
             {
@@ -575,7 +575,7 @@ void Graph::sommet_update()
                 bouffe = (pop/k_nourriture);
             }else bouffe = 10;
 
-            x.second.m_value = pop + 0.005*( pop*(1 - bouffe) - pop*k_predation/1000);
+            x.second.m_value = pop + 0.01*( pop*(1 - 30*bouffe) - pop*k_predation/50);
 
             if(x.second.m_value<=0)
             {
