@@ -363,6 +363,7 @@ void Graph::delete_sommet()
     }
     std::cout<<"le sommet "<<idx<<" a ete efface, il ne peut plus etre modifie et au prochain lancement il n'apparaitra plus"<<std::endl;
 }
+
 void Graph::delete_sommet(int idx)
 {
     m_vertices.erase(idx);
@@ -509,15 +510,18 @@ void Graph::afficher_ans(std::vector<int> ans)
 
 void Graph::kconexe(Graph g)
 {
-    int a=0;
+    int a=1;
     int b;
+    int c;
     Graph tampon=g;
     std::vector<int> ans;
 
     b= make_power_of_2(m_vertices.size());
         while(a<b)
         {
-            if(g.kconexe_find(a)!=1&&g.kconexe_find(a)!=0)
+            c=g.kconexe_find(a);
+
+            if(c!=1&&c!=0)
             {
                 ans.push_back(a);
             }
@@ -528,8 +532,61 @@ void Graph::kconexe(Graph g)
         afficher_ans(ans);
 }
 
+void Graph::sommet_update()
+{
+    std::vector<double> nourriture;
+    std::vector<double> predation;
+    double k_nourriture;
+    double k_predation;
+    double pop;
+    double preda;
+    double bouffe;
 
+    for (auto& x: m_vertices)
+    {
+        pop = x.second.m_value;
+        k_nourriture = 0;
+        k_predation = 0;
 
+        for(auto& y: m_edges)
+        {
+            if(y.second.m_from==x.first)
+            {
+                predation.push_back(y.second.m_weight * m_vertices[y.second.m_to].m_value);
+            }
+            if(y.second.m_to==x.first)
+            {
+                nourriture.push_back(y.second.m_weight * m_vertices[y.second.m_from].m_value);
+            }
+        }
+        if (!nourriture.empty())
+        {
+            for(int i=0; i<nourriture.size(); i++)
+            {
+                k_nourriture = k_nourriture + nourriture[i];
+            }
+            for(int i=0; i<predation.size(); i++)
+            {
+                k_predation = k_predation + predation[i];
+            }
+
+            if (k_nourriture!=0)
+            {
+                bouffe = (pop/k_nourriture);
+            }else bouffe = 10;
+
+            x.second.m_value = pop + 0.005*( pop*(1 - bouffe) - pop*k_predation/1000);
+
+            if(x.second.m_value<=0)
+            {
+               x.second.m_value=0;
+            }
+        }
+
+        predation.resize(0);
+        nourriture.resize(0);
+    }
+}
 
 /// La méthode update à appeler dans la boucle de jeu pour les graphes avec interface
 void Graph::update()
