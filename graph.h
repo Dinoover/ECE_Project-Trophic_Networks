@@ -238,6 +238,8 @@ class Graph
         void load(int a);
         void save();
 
+        void sommet_update();
+
         void new_sommet();
         void delete_sommet();
         void delete_sommet(int idx);
