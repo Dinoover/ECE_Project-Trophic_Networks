@@ -1,6 +1,6 @@
 int main()
 {
-    int z;
+    bool simu=false;
     /// A appeler en 1er avant d'instancier des objets graphiques etc...
     grman::init();
 
@@ -39,6 +39,9 @@ int main()
         }else if(a.compare("kconexe")==0)
         {
             g.kconexe(g);
+        }else if(a.compare("simulation")==0)
+        {
+            if(simu==true){simu=false;} else {simu=true;}
         }
 
 
@@ -49,7 +52,10 @@ int main()
             /// Il faut appeler les méthodes d'update des objets qui comportent des widgets
             g.update();
 
-            g.sommet_update();
+            if(simu==true)
+            {
+                g.sommet_update();
+            }
 
             /// Mise à jour générale (clavier/souris/buffer etc...)
             grman::mettre_a_jour();
