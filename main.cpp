@@ -1,12 +1,6 @@
-#include "grman/grman.h"
-#include <iostream>
-
-#include "graph.h"
-
-
-
 int main()
 {
+    int z;
     /// A appeler en 1er avant d'instancier des objets graphiques etc...
     grman::init();
 
@@ -21,7 +15,7 @@ int main()
     donjon.load(2);
     classique.load(3);
 
-    std::cout<< std::endl <<"attention, si vous revenez sur un graphe, vous reviendrez sur les poids au lancement du programme"<<std::endl;
+    std::cout<< std::endl <<"attention, si vous revenez sur un graphe, vous reviendrez sur les poids au lancement du programme, de meme pour les sommet supprimé"<<std::endl;
     std::cout<<"choisissez un graphe ou appuyez sur 0 pour arreter le processus"<<std::endl;
     std::cin >> a;
 
@@ -55,6 +49,8 @@ int main()
             /// Il faut appeler les méthodes d'update des objets qui comportent des widgets
             g.update();
 
+            g.sommet_update();
+
             /// Mise à jour générale (clavier/souris/buffer etc...)
             grman::mettre_a_jour();
         }
@@ -69,6 +65,7 @@ int main()
     return 0;
 }
 END_OF_MAIN();
+
 
 
 
